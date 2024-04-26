@@ -18,7 +18,7 @@ func main() {
     } // if err
     defer file.Close()
 
-    outputfile, err := os.Create("expandedhexwords.txt")
+    outputfile, err := os.Create("expandedhexwords8letters.txt")
     if err != nil {
         fmt.Println("err creating file:", err)
     } // if err
@@ -39,7 +39,7 @@ func main() {
 
 func all(words []string, outputfile *os.File) {
     for _, word := range words {
-        if canBeRepresentedInHex(word) {
+        if canBeRepresentedInHex(word) && len(word) == 8{
             //fmt.Println(word)
             _, err := outputfile.WriteString(word + "\n")
             if err != nil {
