@@ -18,7 +18,7 @@ func main() {
     } // if err
     defer file.Close()
 
-    outputfile, err := os.Create("expandedhexwords8letters.txt")
+    outputfile, err := os.Create("hexwords8letters.txt")
     if err != nil {
         fmt.Println("err creating file:", err)
     } // if err
@@ -52,7 +52,7 @@ func all(words []string, outputfile *os.File) {
 func canBeRepresentedInHex(word string) bool {
     wordchars := []byte(word)
     for _, char := range wordchars {
-        if !sliceContains(expandedhexchars, char) {
+        if !sliceContains(hexchars, char) {
             return false
         } // if
     } // for char
