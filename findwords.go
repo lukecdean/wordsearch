@@ -6,6 +6,9 @@ import (
     "os"
 ) // import
 
+var hexchars = []byte{'a', 'b', 'c', 'd', 'e'}
+var expandedhexchars = []byte{'a', 'b', 'c', 'd', 'e', 'o', 'l', 's'}
+
 func main() {
     filepath := "words.txt"
     //var wordcount int = 10000
@@ -15,7 +18,7 @@ func main() {
     } // if err
     defer file.Close()
 
-    outputfile, err := os.Create("hexwords.txt")
+    outputfile, err := os.Create("expandedhexwords.txt")
     if err != nil {
         fmt.Println("err creating file:", err)
     } // if err
@@ -47,10 +50,9 @@ func all(words []string, outputfile *os.File) {
 } // all()
 
 func canBeRepresentedInHex(word string) bool {
-    hexchars := []byte{'a', 'b', 'c', 'd', 'e', 'o', 'l', 's'}
     wordchars := []byte(word)
     for _, char := range wordchars {
-        if !sliceContains(hexchars, char) {
+        if !sliceContains(expandedhexchars, char) {
             return false
         } // if
     } // for char
