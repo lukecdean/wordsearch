@@ -6,40 +6,49 @@ import (
     "os"
 ) // import
 
-var hexchars = []byte{'a', 'b', 'c', 'd', 'e'}
-var expandedhexchars = []byte{'a', 'b', 'c', 'd', 'e', 'o', 'l', 's'}
+type wordfitscriteria func(string) bool
 
 func main() {
-    filepath := "words.txt"
-    //var wordcount int = 10000
-    file, err := os.Open(filepath)
-    if err != nil {
-        fmt.Println("err opening file:", err)
-    } // if err
-    defer file.Close()
+    words := getwords("words.txt")
+    checkwords(words, "output/ishexexpanded.txt", ishexexpanded)
+} // main()
 
-    outputfile, err := os.Create("hexwords8letters.txt")
-    if err != nil {
-        fmt.Println("err creating file:", err)
-    } // if err
-    defer outputfile.Close()
+func getwords(wordbankpath string) []string {
+    // open the file
+    wordbankfile := openwordbank(wordbankpath)
+    defer wordbankfile.Close()
 
-    scanner := bufio.NewScanner(file)
+    // scan through the file to load into a list
+    scanner := bufio.NewScanner(wordbankfile)
     var words []string
-    //for i := 0; i < wordcount; i++ {
-        //scanner.Scan()
-        //words = append(words, scanner.Text())
-    //} // for scanner
     for scanner.Scan() {
         words = append(words, scanner.Text())
     } // for 
+    return words
+} // getwords()
 
-    all(words, outputfile)
-} // main()
+func openwordbank(wordbankpath string) *os.File {
+    wordbank, err := os.Open(wordbankpath)
+    if err != nil {
+        fmt.Println("err opening file:", err)
+    } // if err
+    return wordbank
+} // openwordbank()
 
-func all(words []string, outputfile *os.File) {
+func openoutputfile(outputfilepath string) *os.File {
+    outputfile, err := os.Create(outputfilepath)
+    if err != nil {
+        fmt.Println("err creating file:", err)
+    } // if err
+    return outputfile
+} // openoutfile()
+
+func checkwords(words []string, outputfilepath string, fitscriteria wordfitscriteria) {
+    outputfile := openoutputfile(outputfilepath)
+    defer outputfile.Close()
+
     for _, word := range words {
-        if canBeRepresentedInHex(word) && len(word) == 8{
+        if fitscriteria(word) {
             //fmt.Println(word)
             _, err := outputfile.WriteString(word + "\n")
             if err != nil {
@@ -49,15 +58,39 @@ func all(words []string, outputfile *os.File) {
     } // for
 } // all()
 
-func canBeRepresentedInHex(word string) bool {
+func ishex(word string) bool {
+    hexchars := []byte("abcdef")
+    return charsonlyfromset(hexchars, word)
+} // ishex()
+
+func ishexand8chars(word string) bool {
+    hexchars := []byte("abcdef")
+    return charsonlyfromset(hexchars, word) && islen(word, 8)
+} // ishexand8chars()
+
+func ishexexpanded(word string) bool {
+    hexchars := []byte("abcdefslo")
+    return charsonlyfromset(hexchars, word)
+} // ishexexpanded()
+
+func ishexexpandedand8chars(word string) bool {
+    hexchars := []byte("abcdefslo")
+    return charsonlyfromset(hexchars, word) && islen(word, 8)
+} // ishexexpanded()
+
+func charsonlyfromset(charset []byte, word string) bool {
     wordchars := []byte(word)
     for _, char := range wordchars {
-        if !sliceContains(hexchars, char) {
+        if !sliceContains(charset, char) {
             return false
         } // if
     } // for char
     return true
 } // canBeHex()
+
+func islen(word string, length int) bool {
+    return len(word) == length
+} // islen
 
 func sliceContains(bytes []byte, b byte) bool {
     for _, slicebyte := range bytes {
