@@ -1,3 +1,3 @@
-module main
+module wordfinder
 
 go 1.16
