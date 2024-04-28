@@ -6,8 +6,7 @@ func main() {
     wordfinder.Checkwords("wordbank/wordbank.txt", "output/ishexand7chars.txt", ishexand7chars)
 } // main()
 
-// Wordfitscriteria functions ie define a certain criteria for words
-
+// Wordfitscriteria functions ie funcs that define a certain criteria for words
 func ishex(word string) bool {
     hexchars := []byte("abcdef")
     return charsonlyfromset(hexchars, word)
