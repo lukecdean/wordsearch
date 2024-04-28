@@ -3,7 +3,7 @@ package main
 import "wordfinder/wordfinder"
 
 func main() {
-    wordfinder.Checkwords("words.txt", "output/ishexand7chars.txt", ishexand7chars)
+    wordfinder.Checkwords("wordbank/wordbank.txt", "output/ishexand7chars.txt", ishexand7chars)
 } // main()
 
 // Wordfitscriteria functions ie define a certain criteria for words
