@@ -8,9 +8,9 @@ import (
 
 type Wordfitscriteria func(string) bool
 
-func Checkwords(wordbankpath string, outputfilepath string, fitscriteria Wordfitscriteria) {
+func Checkwords(wordbankpath string, outputfilename string, fitscriteria Wordfitscriteria) {
     // create output file
-    outputfile := openoutputfile(outputfilepath)
+    outputfile := openoutputfile(outputfilename)
     defer outputfile.Close()
 
     // load the words from the wordbank into a list
@@ -50,8 +50,9 @@ func openwordbank(wordbankpath string) *os.File {
     return wordbank
 } // openwordbank()
 
-func openoutputfile(outputfilepath string) *os.File {
-    outputfile, err := os.Create(outputfilepath)
+func openoutputfile(outputfilename string) *os.File {
+    outputdir := "output/"
+    outputfile, err := os.Create(outputdir + outputfilename + ".txt")
     if err != nil {
         fmt.Println("err creating file:", err)
     } // if err
