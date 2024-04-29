@@ -6,9 +6,9 @@ import (
     "os"
 ) // import
 
-type Wordfitscriteria func(string) bool
+type Criterion func(string) bool
 
-func Checkwords(wordbankpath string, outputfilename string, fitscriteria Wordfitscriteria) {
+func Checkwords(wordbankpath string, outputfilename string, criteria []Criterion) {
     // create output file
     outputfile := openoutputfile(outputfilename)
     defer outputfile.Close()
@@ -18,14 +18,23 @@ func Checkwords(wordbankpath string, outputfilename string, fitscriteria Wordfit
 
     // search the words
     for _, word := range words {
-        if fitscriteria(word) {
-            //fmt.Println(word)
-            _, err := outputfile.WriteString(word + "\n")
-            if err != nil {
-                fmt.Println("err writing to file:", err)
-            } // err
-        } // if
-    } // for
+        // check all the criteria
+        fits := true
+        for _, criterion := range criteria {
+            fits = fits && crteria(word)
+        } // for criteria
+
+        // if any fail, don't add
+        if !fits {
+            continue
+        } // if fits
+
+        // else add to file
+        _, err := outputfile.WriteString(word + "\n")
+        if err != nil {
+            fmt.Println("err writing to file:", err)
+        } // err
+    } // for word
 } // all()
 
 func getwords(wordbankpath string) []string {

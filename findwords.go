@@ -3,6 +3,7 @@ package main
 import "wordfinder/wordfinder"
 
 func main() {
+    var criteria []Criterion{}
     wordfinder.Checkwords("wordbank/wordbank.txt", "ishexand7chars", ishexand7chars)
 } // main()
 
@@ -39,7 +40,8 @@ func ishexexpandedand8chars(word string) bool {
     return charsonlyfromset(hexchars, word) && islen(word, 8)
 } // ishexexpanded()
 
-func charsonlyfromset(charset []byte, word string) bool {
+func charsonlyfromset(charset string, word string) bool {
+    byteset := []byte(charset)
     wordchars := []byte(word)
     for _, char := range wordchars {
         if !sliceContains(charset, char) {
