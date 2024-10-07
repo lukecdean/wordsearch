@@ -6,10 +6,12 @@ import (
 ) // import
 
 func main() {
-    for i := 3; i <= 16; i++ {
-        runCriterion("abcdef", i)
-        fmt.Printf("running critrion")
-    } // for i
+    runCriterion("acemnorsuvwxz", 3)
+    runCriterion("acemnorsuvwxz", 6)
+    runCriterion("acemnorsuvwxz", 8)
+    runCriterion("acemnorsuvwxz", 9)
+    runCriterion("acemnorsuvwxz", 12)
+    runCriterion("acemnorsuvwxz", 16)
 } // main()
 
 func runCriterion(charset string, length int) {
