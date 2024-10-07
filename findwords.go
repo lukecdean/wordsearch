@@ -34,38 +34,6 @@ func createCharSetCriterion(charset string) wordfinder.Criterion {
     }
 } // createCharSetCriterion()
 
-/*
-// Wordfitscriteria functions ie funcs that define a certain criteria for words
-func ishex(word string) bool {
-    hexchars := []byte("abcdef")
-    return charsonlyfromset(hexchars, word)
-} // ishex()
-
-func ishexand6chars(word string) bool {
-    hexchars := []byte("abcdef")
-    return charsonlyfromset(hexchars, word) && islen(word, 6)
-} // ishexand8chars()
-
-func ishexand7chars(word string) bool {
-    hexchars := []byte("abcdef")
-    return charsonlyfromset(hexchars, word) && islen(word, 7)
-} // ishexand8chars()
-
-func ishexand8chars(word string) bool {
-    hexchars := []byte("abcdef")
-    return charsonlyfromset(hexchars, word) && islen(word, 8)
-} // ishexand8chars()
-
-func ishexexpanded(word string) bool {
-    hexchars := []byte("abcdefslo")
-    return charsonlyfromset(hexchars, word)
-} // ishexexpanded()
-
-func ishexexpandedand8chars(word string) bool {
-    hexchars := []byte("abcdefslo")
-    return charsonlyfromset(hexchars, word) && islen(word, 8)
-} // ishexexpanded()
-*/
 func charsonlyfromset(charset string, word string) bool {
     byteset := []byte(charset)
     wordchars := []byte(word)
