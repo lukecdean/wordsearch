@@ -3,12 +3,25 @@ package main
 import "wordfinder/wordfinder"
 
 func main() {
-    var criteria []Criterion{}
-    wordfinder.Checkwords("wordbank/wordbank.txt", "ishexand7chars", ishexand7chars)
+    var criteria []wordfinder.Criterion
+    criteria = append(criteria, createLenCriterion(3))
+    criteria = append(criteria, createCharSetCriterion("abcdef"))
+    wordfinder.Checkwords("wordbank/wordbank.txt", "h3", criteria)
 } // main()
 
+func createLenCriterion(length int) wordfinder.Criterion {
+    return func(word string) bool {
+        return islen(length, word)
+    }
+}
 
+func createCharSetCriterion(charset string) wordfinder.Criterion {
+    return func(word string) bool {
+        return charsonlyfromset(charset, word)
+    }
+}
 
+/*
 // Wordfitscriteria functions ie funcs that define a certain criteria for words
 func ishex(word string) bool {
     hexchars := []byte("abcdef")
@@ -39,12 +52,12 @@ func ishexexpandedand8chars(word string) bool {
     hexchars := []byte("abcdefslo")
     return charsonlyfromset(hexchars, word) && islen(word, 8)
 } // ishexexpanded()
-
+*/
 func charsonlyfromset(charset string, word string) bool {
     byteset := []byte(charset)
     wordchars := []byte(word)
     for _, char := range wordchars {
-        if !sliceContains(charset, char) {
+        if !sliceContains(byteset, char) {
             return false
         } // if
     } // for char
@@ -60,6 +73,6 @@ func sliceContains(bytes []byte, b byte) bool {
     return false
 } // sliceContains()
 
-func islen(word string, length int) bool {
+func islen(length int, word string) bool {
     return len(word) == length
 } // islen

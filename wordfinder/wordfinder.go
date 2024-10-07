@@ -21,8 +21,8 @@ func Checkwords(wordbankpath string, outputfilename string, criteria []Criterion
         // check all the criteria
         fits := true
         for _, criterion := range criteria {
-            fits = fits && crteria(word)
-        } // for criteria
+            fits = fits && criterion(word)
+        } // for criterion
 
         // if any fail, don't add
         if !fits {
