@@ -1,25 +1,36 @@
 package main
 
-import "wordfinder/wordfinder"
+import (
+    "fmt"
+    "wordfinder/wordfinder"
+) // import
 
 func main() {
-    var criteria []wordfinder.Criterion
-    criteria = append(criteria, createLenCriterion(3))
-    criteria = append(criteria, createCharSetCriterion("abcdef"))
-    wordfinder.Checkwords("wordbank/wordbank.txt", "h3", criteria)
+    for i := 3; i <= 16; i++ {
+        runCriterion("abcdef", i)
+        fmt.Printf("running critrion")
+    } // for i
 } // main()
+
+func runCriterion(charset string, length int) {
+    name := fmt.Sprintf("%s_%d", charset, length)
+    var criteria []wordfinder.Criterion
+    criteria = append(criteria, createLenCriterion(length))
+    criteria = append(criteria, createCharSetCriterion(charset))
+    wordfinder.Checkwords("wordbank/wordbank.txt", name, criteria)
+} // runCriterion()
 
 func createLenCriterion(length int) wordfinder.Criterion {
     return func(word string) bool {
         return islen(length, word)
     }
-}
+} // createLenCriterion()
 
 func createCharSetCriterion(charset string) wordfinder.Criterion {
     return func(word string) bool {
         return charsonlyfromset(charset, word)
     }
-}
+} // createCharSetCriterion()
 
 /*
 // Wordfitscriteria functions ie funcs that define a certain criteria for words
