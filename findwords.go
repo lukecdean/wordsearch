@@ -1,13 +1,40 @@
 package main
 
-import "wordfinder/wordfinder"
+import (
+    "fmt"
+    "wordfinder/wordfinder"
+) // import
 
 func main() {
-    wordfinder.Checkwords("wordbank/wordbank.txt", "ishexand7chars", ishexand7chars)
+    runCriterion("acemnorsuvwxz", 3)
+    runCriterion("acemnorsuvwxz", 6)
+    runCriterion("acemnorsuvwxz", 8)
+    runCriterion("acemnorsuvwxz", 9)
+    runCriterion("acemnorsuvwxz", 12)
+    runCriterion("acemnorsuvwxz", 16)
 } // main()
 
+func runCriterion(charset string, length int) {
+    name := fmt.Sprintf("%s_%d", charset, length)
+    var criteria []wordfinder.Criterion
+    criteria = append(criteria, createLenCriterion(length))
+    criteria = append(criteria, createCharSetCriterion(charset))
+    wordfinder.Checkwords("wordbank/wordbank.txt", name, criteria)
+} // runCriterion()
 
+func createLenCriterion(length int) wordfinder.Criterion {
+    return func(word string) bool {
+        return islen(length, word)
+    }
+} // createLenCriterion()
 
+func createCharSetCriterion(charset string) wordfinder.Criterion {
+    return func(word string) bool {
+        return charsonlyfromset(charset, word)
+    }
+} // createCharSetCriterion()
+
+/*
 // Wordfitscriteria functions ie funcs that define a certain criteria for words
 func ishex(word string) bool {
     hexchars := []byte("abcdef")
@@ -38,11 +65,12 @@ func ishexexpandedand8chars(word string) bool {
     hexchars := []byte("abcdefslo")
     return charsonlyfromset(hexchars, word) && islen(word, 8)
 } // ishexexpanded()
-
-func charsonlyfromset(charset []byte, word string) bool {
+*/
+func charsonlyfromset(charset string, word string) bool {
+    byteset := []byte(charset)
     wordchars := []byte(word)
     for _, char := range wordchars {
-        if !sliceContains(charset, char) {
+        if !sliceContains(byteset, char) {
             return false
         } // if
     } // for char
@@ -58,6 +86,6 @@ func sliceContains(bytes []byte, b byte) bool {
     return false
 } // sliceContains()
 
-func islen(word string, length int) bool {
+func islen(length int, word string) bool {
     return len(word) == length
 } // islen
